@@ -1,0 +1,14 @@
+path {
+  color: white;
+  stroke-width: 4px;
+}
+
+path:hover {
+  fill: beige;
+  cursor: pointer;
+}
+
+.map {
+  float: left;
+  width: 80%;
+}
