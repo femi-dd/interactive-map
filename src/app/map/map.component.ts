@@ -11,11 +11,12 @@ import { CountryService } from '../country.service';
   styleUrl: './map.component.css',
 })
 export class MapComponent {
-  // starts of setting the event listeners for every country and the neccessary data to use for  API calls
-
-  constructor(private apiService: CountryService) {}
-
-  test = 'vjfnvfs';
+  // Initializes the countryService to be used for api calls and data transfer
+  // Initializes the inbuild httpClient which allows api calles to be made
+  constructor(
+    private countryService: CountryService,
+    private http: HttpClient
+  ) {}
 
   /*
   when the component is initialized, add an event listener to all the country paths
@@ -26,7 +27,17 @@ export class MapComponent {
     for (let i = 0; i < countries.length; i++) {
       let tagId: any = countries[i].getAttribute('id');
       countries[i].addEventListener('click', () => {
-        this.apiService.setCountryId(tagId);
+        this.countryService.callApi(tagId).subscribe((apiResponse: any) => {
+          this.countryService.updateCountry({
+            id: apiResponse[1][0].id,
+            name: apiResponse[1][0].name,
+            capital: apiResponse[1][0].capitalCity,
+            region: apiResponse[1][0].region.value,
+            income_level: apiResponse[1][0].incomeLevel.value,
+            latitude: apiResponse[1][0].latitude,
+            longitude: apiResponse[1][0].longitude,
+          });
+        });
       });
     }
   }

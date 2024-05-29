@@ -8,33 +8,26 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class CountryService {
   constructor(private http: HttpClient) {}
 
-  private countryId: string = 'us';
+  // creates a behaviorSubject which the sidebar component can subscribe to in the event of a data change
+  // when the user clicks a new country
+  private currentCountry = new BehaviorSubject<any>({});
 
-  private currentCountry: any;
-  private apiUrl = 'http://api.worldbank.org/v2/country/';
-
-  getCountryData() {
-    this.http
-      .get(this.apiUrl + this.countryId + '?format=json')
-      .subscribe((apiResponse: any) => {
-        this.currentCountry = {
-          name: apiResponse[1][0].name,
-          capital: apiResponse[1][0].capitalCity,
-          region: apiResponse[1][0].region.value,
-          income_level: apiResponse[1][0].incomeLevel.value,
-          latitude: apiResponse[1][0].latitude,
-          longitude: apiResponse[1][0].longitude,
-        };
-      });
+  // updates the country Subject with new data from the api
+  // this functions is called by the mapcomponent that triggers the api call
+  updateCountry(country: any) {
+    this.currentCountry.next(country);
   }
 
-  setCountryId(countryid: string) {
-    this.countryId = countryid;
-  }
-
+  // returns the new data from the country Subject
+  // this function is called by the sidebar component and used to populate its fields
   getCurrentCountry() {
-    this.getCountryData();
-    console.log('this was called');
     return this.currentCountry;
+  }
+
+  // access the world bank api using the passed path(country) ID
+  callApi(countryId: string) {
+    return this.http.get(
+      'http://api.worldbank.org/v2/country/' + countryId + '?format=json'
+    );
   }
 }

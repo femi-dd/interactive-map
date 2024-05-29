@@ -2,6 +2,11 @@
   float: left;
   width: 20%;
   background-color: aquamarine;
-  height: 600px;
-  /* border: 5px solid; */
+  height: 500px;
+  padding-left: 5px;
+}
+
+
+h4 {
+  text-align: center;
 }

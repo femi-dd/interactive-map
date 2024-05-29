@@ -14,5 +14,9 @@ export class SidebarComponent {
 
   country: any;
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.countryService.getCurrentCountry().subscribe((data) => {
+      this.country = data;
+    });
+  }
 }
